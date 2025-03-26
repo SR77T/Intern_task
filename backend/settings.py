@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 
+from datetime import timedelta
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,7 +22,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# SECRET_KEY = 'django-insecure-2!v2&vw=ipa+r_!xpv%%3d0fvor4zj5wgx)(#e)i7hjtn9ijx('
+
 SECRET_KEY = 'django-insecure-2!v2&vw=ipa+r_!xpv%%3d0fvor4zj5wgx)(#e)i7hjtn9ijx('
+
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -48,6 +54,17 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 
+
+SIMPLE_JWT = {
+    'SIGNING_KEY': SECRET_KEY,
+    # Other optional settings (expiration, algorithm, etc.)
+    'ALGORITHM': 'HS256',
+
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  # e.g., access token lifetime
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),   
+}
+
+
 REST_FRAMEWORK = {
    
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -66,6 +83,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'myapp.middleware.ApiAuthMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'

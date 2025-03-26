@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from rest_framework import generics
-# from rest_framework.permissions import AllowAny
 from django.contrib.auth.models import User
 from .serializers import RegisterSerializer, LoginSerializer, UserSerializer, ArticleSerializer
 from django.contrib.auth import authenticate
@@ -47,13 +46,19 @@ class DashboardView(APIView):
 
 
 
-class ArticleListCreateView(generics.ListCreateAPIView):
+class ArticleListView(generics.ListAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
     permission_classes = [IsAuthenticated]
 
-    def perform_create(self, serializer):
-        serializer.save(author = self.request.user)
+
+class ArticleCreateView(generics.CreateAPIView):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+    permission_classes = [IsAuthenticated]
+
+    # def perform_create(self, serializer):
+    #     serializer.save(author = self.request.user)
 
 
 class ArticleDetailView(generics.RetrieveUpdateDestroyAPIView):
